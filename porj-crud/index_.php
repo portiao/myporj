@@ -1,7 +1,7 @@
 <?php
 
 include __DIR__ . './partials/init.php';
-$title = "藥局";
+$title = "薬局";
 
 // 如果沒有啟用 session, 就啟用
 if(! isset($_SESSION)) {
