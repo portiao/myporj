@@ -11,7 +11,7 @@ $pPhone = $_GET["pPhone"];
 $pTime = $_GET["pTime"];
 
 
-include __DIR__ . './partials/db-connect.php';
+include __DIR__ . './partials/init.php';
 
 //編輯修改
 $sql = "UPDATE `stores_list` SET `sName` = '$pName', `sLocal_phone` = '$pPhone', `s_address` = '$pAddress', `s_time` = '$pTime' WHERE `stores_list`.`sId` = $eid;";

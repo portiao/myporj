@@ -1,7 +1,7 @@
 <?php
 $id = $_GET["id"];
 
-require __DIR__. './partials/db-connect.php';
+require __DIR__. './partials/init.php';
 
 
 //刪除檔案

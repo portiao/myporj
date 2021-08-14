@@ -11,7 +11,7 @@ $pTime = $_GET["pTime"];
 
 
 //連接
-include __DIR__ . './partials/db-connect.php';
+include __DIR__ . './partials/init.php';
 
 //新增的資料
 $sql = "INSERT INTO `stores_list` (`sId`, `sName`, `sLocal_phone`, `s_address`, `s_time`, `created_at`) VALUES (NULL, '$pName', '$pPhone', '$pAddress', '$pTime', current_timestamp());";

@@ -2,7 +2,7 @@
 
 $id = $_GET["id"];
 
-require __DIR__. './partials/db-connect.php';
+require __DIR__. './partials/init.php';
 
 //依據id 來找到目前的位置
 $sql = "SELECT * FROM `stores_list` WHERE `sId` = $id ORDER BY `sId` DESC";
@@ -74,5 +74,47 @@ $res = $result->fetch(PDO::FETCH_ASSOC);
 
 
 <?php include __DIR__ . './partials/scripts.php'; ?>
+<script>
+    //設定頁面的回應及提醒方式
+    //先預設為通過，只要一個不通過，就是錯誤。
+    //先建立一個變數為true,再看底下條件，其中一個條件成立那就把isPass = false (不通過)
+    function sendForm(){
+        let isPass = true;
+        document.form1.pName.nextElementSibling.style.display = 'none';
+        document.form1.pAddress.nextElementSibling.style.display = 'none';
+        document.form1.pPhone.nextElementSibling.style.display = 'none';
+        document.form1.pTime.nextElementSibling.style.display = 'none';
 
+        if( ! document.form1.pName.value){
+            document.form1.pName.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pAddress.value){
+            document.form1.pAddress.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pPhone.value){
+            document.form1.pPhone.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pTime.value){
+            document.form1.pTime.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+
+        if (isPass){
+            //fd=form data
+            const fd = new FormData(document.form1);
+
+            fetche('add-list.php',{
+                method:'POST',
+                body:fd,
+            })
+            // .then(r=>.text())
+            // .then(txt=>{
+            //     console.log('result:',txt);
+            // })
+        }
+    }
+</script>
 <?php include __DIR__ . './partials/html-foot.php'; ?>

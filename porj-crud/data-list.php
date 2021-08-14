@@ -1,30 +1,38 @@
 <?php
 
-require __DIR__. './partials/db-connect.php';
+require __DIR__. './partials/init.php';
 $title = "薬局";
 
-// 如果沒有啟用 session, 就啟用
-if(! isset($_SESSION)) {
-    session_start();
-}
+//如果沒有啟用 session, 就啟用
+// if(! isset($_SESSION)) {
+//     session_start();
+// }
+
+//建立一個$page幾頁的變數
+$perPage = 5; //固定一頁最多有幾筆資訊
+
+//用戶決定查看幾頁，預設為 1
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 
-// //固定一頁有幾筆資訊
-// $perPage = 6;
+//總共有幾筆； 
+//取得單筆資料用 fetch(PDO::FETCH_ASSOC)，取得多筆資料用fetchAll(PDO::FETCH_ASSOC)
+//這裡用FETCH_NUM (是不需要欄位名稱)，後面使用索引是陣列，因為是一筆資料，陣列為0
+$totalRows = $PDO->query("SELECT count(1) FROM stores_list")->fetch(PDO::FETCH_NUM)[0];
+// echo $totalRows; exit;  //到這邊還是正常的
 
-// //用戶決定查看幾頁，預設為1
-// $page = isset($_GET['page']) ? intval($_GET['page']) : 1 ;
+//總共有幾頁，才能產生分頁按鈕
+//總頁數 = 總比數 / 每頁幾筆
+$totalPages = ceil($totalRows / $perPage); // ceil 正數，無條件進位
+// echo "$totalRows, $totalPages"; exit; //查看狀態是否正確
 
 
-//總共有幾筆
-// $totalRows = $conn->query("SELECT count(1) FROM stores_list")->fetch(PDO::FETCH_NUM)[0];
-// echo $totalRows; exit;
+//SELECT * FROM stores_list ORDER BY sid DESC LIMIT 0, 7
+$sql = sprintf("SELECT * FROM stores_list ORDER BY sid DESC LIMIT %s, %s",
+        ($page-1)*$perPage, $perPage);
 
-//總共有幾頁
-
-// SELECT * FROM `stores_list` ORDER BY `sId` ASC
-//資料列表
-// $rows = $conn->query("SELECT * FROM stores_list ORDER BY sid ASC LIMIT 10")->fetchAll();
+$rows = $PDO->query($sql)
+            ->fetchAll();
 
 ?>
 <style>
@@ -106,4 +114,47 @@ if(! isset($_SESSION)) {
 </div>
 
 <?php include __DIR__ . './partials/scripts.php'; ?>
+<script>
+    //設定頁面的回應及提醒方式
+    //先預設為通過，只要一個不通過，就是錯誤。
+    //先建立一個變數為true,再看底下條件，其中一個條件成立那就把isPass = false (不通過)
+    function sendForm(){
+        let isPass = true;
+        document.form1.pName.nextElementSibling.style.display = 'none';
+        document.form1.pAddress.nextElementSibling.style.display = 'none';
+        document.form1.pPhone.nextElementSibling.style.display = 'none';
+        document.form1.pTime.nextElementSibling.style.display = 'none';
+
+        if( ! document.form1.pName.value){
+            document.form1.pName.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pAddress.value){
+            document.form1.pAddress.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pPhone.value){
+            document.form1.pPhone.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+        if( ! document.form1.pTime.value){
+            document.form1.pTime.nextElementSibling.style.display = 'block';
+            isPass = false;
+        }
+
+        if (isPass){
+            //fd=form data
+            const fd = new FormData(document.form1);
+
+            fetche('add-list.php',{
+                method:'POST',
+                body:fd,
+            })
+            // .then(r=>.text())
+            // .then(txt=>{
+            //     console.log('result:',txt);
+            // })
+        }
+    }
+</script>
 <?php include __DIR__ . './partials/html-foot.php'; ?>
