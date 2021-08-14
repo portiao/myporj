@@ -9,7 +9,7 @@ $title = "薬局";
 // }
 
 //建立一個$page幾頁的變數
-$perPage = 5; //固定一頁最多有幾筆資訊
+$perPage = 7; //固定一頁最多有幾筆資訊
 
 //用戶決定查看幾頁，預設為 1
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -66,8 +66,8 @@ $rows = $PDO->query($sql)
             </thead>
             <tbody>
                 <?php
-                //取得資料
-                $sql = "SELECT * FROM `stores_list`";
+                //取得資料--(全部)
+                // $sql = "SELECT * FROM `stores_list`";
                 $result = $PDO->query($sql);
                 ?>
                 <?php
