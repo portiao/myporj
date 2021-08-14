@@ -17,10 +17,10 @@ include __DIR__ . './partials/db-connect.php';
 $sql = "INSERT INTO `stores_list` (`sId`, `sName`, `sLocal_phone`, `s_address`, `s_time`, `created_at`) VALUES (NULL, '$pName', '$pPhone', '$pAddress', '$pTime', current_timestamp());";
 
 //執行新增
-$conn->query($sql);
+$PDO->query($sql);
 
 //回到首頁
-header("Location:index_.php");
+header("Location:data-list.php");
 
 
 

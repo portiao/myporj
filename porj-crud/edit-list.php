@@ -17,9 +17,9 @@ include __DIR__ . './partials/db-connect.php';
 $sql = "UPDATE `stores_list` SET `sName` = '$pName', `sLocal_phone` = '$pPhone', `s_address` = '$pAddress', `s_time` = '$pTime' WHERE `stores_list`.`sId` = $eid;";
 
 //執行修改
-$conn->query($sql);
+$PDO->query($sql);
 
 //回到首頁
-header("Location:index_.php");
+header("Location:data-list.php");
 ?>
 
